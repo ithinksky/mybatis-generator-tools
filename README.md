@@ -1,2 +1,2 @@
-# mybatis-genertor-tools
-mybatis genertor tools
+# mybatis-generator-tools
+mybatis generator tools
