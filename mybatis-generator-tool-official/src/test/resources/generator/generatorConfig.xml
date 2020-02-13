@@ -26,21 +26,66 @@
         <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
 
         <!-- generate entity时，生成hashcode和equals方法 -->
-        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+        <!--<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
 
         <!-- generate entity时，生成serialVersionUID -->
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
 
         <!-- 这个插件只会增加字符串字段映射到一个JDBC字符的方法 -->
-        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+        <!--<plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>-->
 
         <!-- genenat entity时,生成toString -->
-        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+        <!--<plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+
+        <!--&lt;!&ndash; Lombok插件 &ndash;&gt;-->
+        <!--<plugin type="com.itfsw.mybatis.generator.plugins.LombokPlugin">-->
+            <!--&lt;!&ndash; @Data 默认开启,同时插件会对子类自动附加@EqualsAndHashCode(callSuper = true)，@ToString(callSuper = true) &ndash;&gt;-->
+            <!--<property name="@Data" value="true"/>-->
+            <!--&lt;!&ndash; @Builder 必须在 Lombok 版本 >= 1.18.2 的情况下开启，对存在继承关系的类自动替换成@SuperBuilder &ndash;&gt;-->
+            <!--<property name="@Builder" value="false"/>-->
+            <!--&lt;!&ndash; @NoArgsConstructor 和 @AllArgsConstructor 使用规则和Lombok一致 &ndash;&gt;-->
+            <!--<property name="@AllArgsConstructor" value="false"/>-->
+            <!--<property name="@NoArgsConstructor" value="false"/>-->
+            <!--&lt;!&ndash; @Getter、@Setter、@Accessors 等使用规则参见官方文档 &ndash;&gt;-->
+            <!--<property name="@Accessors(chain = true)" value="false"/>-->
+            <!--&lt;!&ndash; 临时解决IDEA工具对@SuperBuilder的不支持问题，开启后(默认未开启)插件在遇到@SuperBuilder注解时会调用ModelBuilderPlugin来生成相应的builder代码 &ndash;&gt;-->
+            <!--<property name="supportSuperBuilderForIdea" value="false"/>-->
+        <!--</plugin>-->
+
+        <!-- 状态枚举生成插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.EnumTypeStatusPlugin">
+            <!-- 是否开启自动扫描根据约定注释格式生成枚举，默认true -->
+            <property name="autoScan" value="true"/>
+            <!-- autoScan为false,这里可以定义全局需要检查生成枚举类的列名 -->
+            <property name="enumColumns" value="type, status"/>
+        </plugin>
+
+        <!-- 批量插入插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin">
+            <!--
+            开启后可以实现官方插件根据属性是否为空决定是否插入该字段功能
+            ！需开启allowMultiQueries=true多条sql提交操作，所以不建议使用！插件默认不开启
+            -->
+            <property name="allowMultiQueries" value="false"/>
+        </plugin>
+        <!-- Example Criteria 增强插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin">
+            <!-- 是否支持已经过时的andIf方法（推荐使用when代替），默认支持 -->
+            <!--<property name="enableAndIf" value="true"/>-->
+        </plugin>
+
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+
+        <!-- 自定义注释插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.CommentPlugin">
+            <!-- 自定义模板路径 -->
+            <property name="template" value="src/test/resources/test.ftl" />
+        </plugin>
 
         <!-- 注释 -->
         <commentGenerator>
-            <property name="suppressAllComments" value="false" /><!-- 是否取消注释 -->
-            <property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳 -->
+            <property name="suppressAllComments" value="false"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="false"/> <!-- 是否生成注释代时间戳 -->
         </commentGenerator>
 
         <!--		<jdbcConnection driverClass="${spring.datasource.driver-class-name}"
@@ -52,6 +97,7 @@
                         userId="root"
                         password="adminto">
         </jdbcConnection>
+
 
         <!-- java类型处理器
         用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；
@@ -93,7 +139,7 @@
         <!--对应的xml mapper文件 -->
         <sqlMapGenerator targetPackage="sqlMapper"
                          targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口
@@ -107,7 +153,7 @@
         <!-- 对应的dao接口 -->
         <javaClientGenerator type="XMLMAPPER"
                              targetPackage="com.ithinksky.base.dao" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
 
