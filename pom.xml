@@ -14,6 +14,7 @@
 
     <modules>
         <module>mybatis-generator-tool-official</module>
+        <module>mybatis-generator-tool-tk-mapper</module>
     </modules>
 
     <properties>

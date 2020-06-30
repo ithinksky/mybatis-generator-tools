@@ -12,6 +12,15 @@
 ### IntelliJ IDEA ###
 .idea
 *.iws
-*.iml
+**/*.iml
 *.ipr
 work.bat
+将删除 mybatis-generator-tool-official/src/main/java/com/ithinksky/base/dao/BaseentityMapper.java
+将删除 mybatis-generator-tool-official/src/main/java/com/ithinksky/base/dao/SystemconfigMapper.java
+将删除 mybatis-generator-tool-official/src/main/java/com/ithinksky/base/model/Baseentity.java
+将删除 mybatis-generator-tool-official/src/main/java/com/ithinksky/base/model/BaseentityExample.java
+将删除 mybatis-generator-tool-official/src/main/java/com/ithinksky/base/model/Systemconfig.java
+将删除 mybatis-generator-tool-official/src/main/java/com/ithinksky/base/model/SystemconfigExample.java
+将删除 mybatis-generator-tool-official/src/main/resources/sqlMapper/BaseentityMapper.xml
+将删除 mybatis-generator-tool-official/src/main/resources/sqlMapper/SystemconfigMapper.xml
+将删除 mybatis-generator-tool-tk-mapper/src/test/

@@ -76,11 +76,11 @@
 
         <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
 
-        <!-- 自定义注释插件 -->
-        <plugin type="com.itfsw.mybatis.generator.plugins.CommentPlugin">
-            <!-- 自定义模板路径 -->
-            <property name="template" value="src/test/resources/test.ftl" />
-        </plugin>
+<!--        &lt;!&ndash; 自定义注释插件 &ndash;&gt;-->
+<!--        <plugin type="com.itfsw.mybatis.generator.plugins.CommentPlugin">-->
+<!--            &lt;!&ndash; 自定义模板路径 &ndash;&gt;-->
+<!--            <property name="template" value="src/test/resources/test.ftl" />-->
+<!--        </plugin>-->
 
         <!-- 注释 -->
         <commentGenerator>
@@ -93,9 +93,9 @@
                     password="${spring.datasource.password}">
                 </jdbcConnection>-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/labs-admin?characterEncoding=UTF-8&#38;useSSL=false"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/labs_study4mysql?characterEncoding=UTF-8&#38;useSSL=false"
                         userId="root"
-                        password="adminto">
+                        password="1qaz2wsx">
         </jdbcConnection>
 
 
@@ -210,6 +210,18 @@
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--            <columnRenamingRule searchString="^[^_]+" replaceString=""/>-->
+
+            <!--
+                earchString="^[^_]+",这个查找字符串就是使用正则表达式来匹配表的字段名
+                这个意思就是匹配，开头的任意个非下划线(_)的字符，也就是这种如：c_，abc_。。。等等
+                <columnRenamingRule searchString="^[^_]+" replaceString=""/>
+
+                去除表前缀
+                <domainObjectRenamingRule searchString="^T" replaceString="" />
+                -->
+            <!--   去除表前缀， 场景：比如表名为t_user，想要生成User开头的文件，而不是TUser开头的文件。-->
+            <domainObjectRenamingRule searchString="^T" replaceString="" />
         </table>
 
     </context>
