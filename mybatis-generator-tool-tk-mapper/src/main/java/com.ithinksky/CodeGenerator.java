@@ -20,7 +20,7 @@ import java.util.*;
 public class CodeGenerator {
 
 
-    private static final String CONFIG_FILENAME = "config-manager";
+    private static final String CONFIG_FILENAME = "config-dwz";
 
     private static ResourceBundle rb = PropertyResourceBundle.getBundle("generator/config/" + CONFIG_FILENAME);
 
@@ -135,9 +135,9 @@ public class CodeGenerator {
         PluginConfiguration pluginConfiguration = new PluginConfiguration();
         pluginConfiguration.setConfigurationType("tk.mybatis.mapper.generator.MapperPlugin");
         pluginConfiguration.addProperty("mappers", MAPPER_INTERFACE_REFERENCE);
-        pluginConfiguration.addProperty("swagger", "true");
-        pluginConfiguration.addProperty("lombok", "Getter,Setter,ToString,Accessors,EqualsAndHashCode");
-        pluginConfiguration.addProperty("lombokEqualsAndHashCodeCallSuper", "true");
+        pluginConfiguration.addProperty("swagger", "false");
+//        pluginConfiguration.addProperty("lombok", "Getter,Setter,ToString,Accessors,EqualsAndHashCode");
+//        pluginConfiguration.addProperty("lombokEqualsAndHashCodeCallSuper", "false");
         context.addPluginConfiguration(pluginConfiguration);
 
 

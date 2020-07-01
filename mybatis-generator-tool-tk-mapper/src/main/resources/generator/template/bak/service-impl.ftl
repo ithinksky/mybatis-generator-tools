@@ -5,7 +5,7 @@ import ${basePackage}.model.entity.${modelNameUpperCamel};
 import ${basePackage}.service.I${modelNameUpperCamel}Service;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.ithinksky.base.orm.service.BaseService;
+import com.ithinksky.base.core.service.BaseService;
 
 
 /**
