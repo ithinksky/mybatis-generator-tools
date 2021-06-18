@@ -83,10 +83,16 @@
 <!--        </plugin>-->
 
         <!-- 注释 -->
-        <commentGenerator>
-            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
-            <property name="suppressDate" value="false"/> <!-- 是否生成注释代时间戳 -->
+<!--        <commentGenerator>-->
+<!--&lt;!&ndash;            <property name="suppressAllComments" value="false"/>&lt;!&ndash; 是否取消注释 &ndash;&gt;&ndash;&gt;-->
+<!--            <property name="suppressDate" value="false"/> &lt;!&ndash; 是否生成注释代时间戳 &ndash;&gt;-->
+<!--            <property name="addRemarkComments" value="true"/>-->
+<!--        </commentGenerator>-->
+        <commentGenerator type="com.ithinksky.base.MySQLCommentGenerator">
+            <property name="author" value="gaotp"/>
+            <property name="dateFormat" value="yyyy/MM/dd"/>
         </commentGenerator>
+
 
         <!--		<jdbcConnection driverClass="${spring.datasource.driver-class-name}"
                     connectionURL="${spring.datasource.url}" userId="${spring.datasource.username}"
@@ -95,7 +101,11 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://47.100.231.15:3306/tp_risk_control?characterEncoding=UTF-8&#38;useSSL=false"
                         userId="root"
-                        password="123456">
+                        password="mysql@LabS@2019">
+
+            <!-- 类的注释-->
+            <!-- 设置 useInformationSchema 属性为 true -->
+            <property name="useInformationSchema" value="true" />
         </jdbcConnection>
 
 
