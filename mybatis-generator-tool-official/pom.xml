@@ -81,6 +81,13 @@
 						<artifactId>mybatis-generator-plugin</artifactId>
 						<version>1.3.8</version>
 					</dependency>
+					<dependency>
+						<groupId>com.ithinksky</groupId>
+						<artifactId>mybatis-type-plus</artifactId>
+						<version>1.0.0-SNAPSHOT</version>
+						<scope>system</scope>
+						<systemPath>${project.basedir}/lib/mybatis-type-plus-1.0.0-SNAPSHOT.jar</systemPath>
+					</dependency>
 				</dependencies>
 			</plugin>
 		</plugins>

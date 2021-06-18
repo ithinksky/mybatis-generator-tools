@@ -61,20 +61,20 @@
         </plugin>
 
         <!-- 批量插入插件 -->
-        <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin">
-            <!--
-            开启后可以实现官方插件根据属性是否为空决定是否插入该字段功能
-            ！需开启allowMultiQueries=true多条sql提交操作，所以不建议使用！插件默认不开启
-            -->
-            <property name="allowMultiQueries" value="false"/>
-        </plugin>
+<!--        <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin">-->
+<!--            &lt;!&ndash;-->
+<!--            开启后可以实现官方插件根据属性是否为空决定是否插入该字段功能-->
+<!--            ！需开启allowMultiQueries=true多条sql提交操作，所以不建议使用！插件默认不开启-->
+<!--            &ndash;&gt;-->
+<!--            <property name="allowMultiQueries" value="false"/>-->
+<!--        </plugin>-->
         <!-- Example Criteria 增强插件 -->
-        <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin">
-            <!-- 是否支持已经过时的andIf方法（推荐使用when代替），默认支持 -->
-            <!--<property name="enableAndIf" value="true"/>-->
-        </plugin>
+<!--        <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin">-->
+<!--            &lt;!&ndash; 是否支持已经过时的andIf方法（推荐使用when代替），默认支持 &ndash;&gt;-->
+<!--            &lt;!&ndash;<property name="enableAndIf" value="true"/>&ndash;&gt;-->
+<!--        </plugin>-->
 
-        <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+<!--        <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>-->
 
 <!--        &lt;!&ndash; 自定义注释插件 &ndash;&gt;-->
 <!--        <plugin type="com.itfsw.mybatis.generator.plugins.CommentPlugin">-->
@@ -84,7 +84,7 @@
 
         <!-- 注释 -->
         <commentGenerator>
-            <property name="suppressAllComments" value="false"/><!-- 是否取消注释 -->
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
             <property name="suppressDate" value="false"/> <!-- 是否生成注释代时间戳 -->
         </commentGenerator>
 
@@ -93,9 +93,9 @@
                     password="${spring.datasource.password}">
                 </jdbcConnection>-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/labs_study4mysql?characterEncoding=UTF-8&#38;useSSL=false"
+                        connectionURL="jdbc:mysql://47.100.231.15:3306/tp_risk_control?characterEncoding=UTF-8&#38;useSSL=false"
                         userId="root"
-                        password="1qaz2wsx">
+                        password="123456">
         </jdbcConnection>
 
 
@@ -103,7 +103,7 @@
         用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；
         注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型；
         -->
-        <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+        <javaTypeResolver type="com.ithinksky.base.CustomerJavaTypeResolver">
             <!--
                 true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型
                 false：默认,
@@ -123,7 +123,7 @@
         <!-- targetPackage是目标包名, targetProject是包所在的位置 -->
         <!-- javaModelGenerator生成的是实体类, sqlMapGenerator生成的是映射文件, javaClientGenerator生成的是dao -->
         <!-- 生成model模型，对应的包，存放位置可以指定具体的路径,如/ProjectName/src，也可以使用MAVEN来自动生成 -->
-        <javaModelGenerator targetPackage="com.ithinksky.base.model"
+        <javaModelGenerator targetPackage="com.youzu.risk.rcbs.model.entity"
                             targetProject="src/main/java">
             <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
             <property name="enableSubPackages" value="true"/>
@@ -152,7 +152,7 @@
     -->
         <!-- 对应的dao接口 -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.ithinksky.base.dao" targetProject="src/main/java">
+                             targetPackage="com.youzu.risk.rcbs.repository" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
@@ -205,8 +205,11 @@
         <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
 
-        <table tableName="%" delimitAllColumns="false" enableCountByExample="true" enableUpdateByExample="true"
-               enableDeleteByExample="true" enableSelectByExample="true"
+        <table tableName="%" delimitAllColumns="true"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
                selectByExampleQueryId="true">
             <property name="useActualColumnNames" value="false"/>
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
@@ -221,7 +224,7 @@
                 <domainObjectRenamingRule searchString="^T" replaceString="" />
                 -->
             <!--   去除表前缀， 场景：比如表名为t_user，想要生成User开头的文件，而不是TUser开头的文件。-->
-            <domainObjectRenamingRule searchString="^T" replaceString="" />
+<!--            <domainObjectRenamingRule searchString="^Rc" replaceString="" />-->
         </table>
 
     </context>
