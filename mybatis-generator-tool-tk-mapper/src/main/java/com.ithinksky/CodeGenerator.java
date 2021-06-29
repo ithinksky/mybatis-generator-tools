@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 /**
  * 代码生成器，根据数据表名称生成对应的Model、Mapper、Service、Controller简化开发。
  */
@@ -52,17 +51,17 @@ public class CodeGenerator {
     private static final String TEMPLATE_FILE_PATH = BASE_PROJECT_PATH
             + "/mybatis-generator-tool-tk-mapper" + rb.getString("templateFilePath");
 
-    private static final String JAVA_PATH =  SUB_PROJECT_PATH + "/src/main/java"; //java文件路径
-    private static final String RESOURCES_PATH =  SUB_PROJECT_PATH + "/src/main/resources";//资源文件路径
+    private static final String JAVA_PATH = SUB_PROJECT_PATH + "/src/main/java"; //java文件路径
+    private static final String RESOURCES_PATH = SUB_PROJECT_PATH + "/src/main/resources";//资源文件路径
 
     //生成的Service存放路径
-    private static final String PACKAGE_PATH_SERVICE =  packageConvertPath(SERVICE_PACKAGE);
+    private static final String PACKAGE_PATH_SERVICE = packageConvertPath(SERVICE_PACKAGE);
 
     //生成的Service实现存放路径
-    private static final String PACKAGE_PATH_SERVICE_IMPL =  packageConvertPath(SERVICE_IMPL_PACKAGE);
+    private static final String PACKAGE_PATH_SERVICE_IMPL = packageConvertPath(SERVICE_IMPL_PACKAGE);
 
     //生成的Controller存放路径
-    private static final String PACKAGE_PATH_CONTROLLER =  packageConvertPath(CONTROLLER_PACKAGE);
+    private static final String PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
 
     private static final String TABLES = rb.getString("tables");
 
@@ -90,6 +89,7 @@ public class CodeGenerator {
     /**
      * 通过数据表名称生成代码，Model 名称通过解析数据表名称获得，下划线转大驼峰的形式。
      * 如输入表名称 "t_user_detail" 将生成 TUserDetail、TUserDetailMapper、TUserDetailService ...
+     *
      * @param tableNames 数据表名称...
      */
     public static void genCode(String... tableNames) {
@@ -102,12 +102,13 @@ public class CodeGenerator {
     /**
      * 通过数据表名称，和自定义的 Model 名称生成代码
      * 如输入表名称 "t_user_detail" 和自定义的 Model 名称 "User" 将生成 User、UserMapper、UserService ...
+     *
      * @param tableName 数据表名称
      * @param modelName 自定义的 Model 名称
      */
     public static void genCodeByCustomModelName(String tableName, String modelName) {
         genModelAndMapper(tableName, modelName);
-        genService(tableName, modelName);
+//        genService(tableName, modelName);
 //        genFsController(tableName, modelName);
 //        genMsController(tableName, modelName);
 //        genRpcController(tableName, modelName);
@@ -117,12 +118,21 @@ public class CodeGenerator {
     public static void genModelAndMapper(String tableName, String modelName) {
         Context context = new Context(ModelType.FLAT);
         context.setId("Mysql");
-        context.setTargetRuntime("MyBatis3");
+//        context.setTargetRuntime("MyBatis3");
+        // 使用自定义解析机制
+        context.setTargetRuntime("tk.mybatis.mapper.generator.TkMyBatis3Impl");
+
         context.addProperty(PropertyRegistry.CONTEXT_BEGINNING_DELIMITER, "`");
         context.addProperty(PropertyRegistry.CONTEXT_ENDING_DELIMITER, "`");
 
+        // 使用自定义类型转换
+        JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
+        javaTypeResolverConfiguration.setConfigurationType("com.ithinksky.base.CustomerJavaTypeResolver");
+        context.setJavaTypeResolverConfiguration(javaTypeResolverConfiguration);
+
+        // 使用自定义注释
         CommentGeneratorConfiguration commentGeneratorConfiguration = new CommentGeneratorConfiguration();
-        commentGeneratorConfiguration.setConfigurationType(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS);
+        commentGeneratorConfiguration.setConfigurationType("com.ithinksky.base.MySQLCommentGenerator");
         context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
 
         JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
@@ -132,13 +142,14 @@ public class CodeGenerator {
         jdbcConnectionConfiguration.setDriverClass(JDBC_DIVER_CLASS_NAME);
         context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
 
-        PluginConfiguration pluginConfiguration = new PluginConfiguration();
-        pluginConfiguration.setConfigurationType("tk.mybatis.mapper.generator.MapperPlugin");
-        pluginConfiguration.addProperty("mappers", MAPPER_INTERFACE_REFERENCE);
-        pluginConfiguration.addProperty("swagger", "false");
+
+//        PluginConfiguration pluginConfiguration = new PluginConfiguration();
+//        pluginConfiguration.setConfigurationType("tk.mybatis.mapper.generator.MapperPlugin");
+////        pluginConfiguration.addProperty("mappers", MAPPER_INTERFACE_REFERENCE);
+//        pluginConfiguration.addProperty("swagger", "false");
 //        pluginConfiguration.addProperty("lombok", "Getter,Setter,ToString,Accessors,EqualsAndHashCode");
 //        pluginConfiguration.addProperty("lombokEqualsAndHashCodeCallSuper", "false");
-        context.addPluginConfiguration(pluginConfiguration);
+//        context.addPluginConfiguration(pluginConfiguration);
 
 
         // 在Mapper类上 添加 @Mapper注解
@@ -202,12 +213,14 @@ public class CodeGenerator {
         tableConfiguration.setSelectByPrimaryKeyStatementEnabled(true);
         tableConfiguration.setUpdateByPrimaryKeyStatementEnabled(true);
 
-        if (StringUtils.isNotEmpty(modelName)){
-            tableConfiguration.setDomainObjectName(modelName);
-            tableConfiguration.setMapperName(modelName + "Mapper");
+        //  Domain 后缀
+        //  Mapper 后缀
+        if (StringUtils.isNotEmpty(modelName)) {
+            tableConfiguration.setDomainObjectName(modelName + "Entity");
+            tableConfiguration.setMapperName(modelName + "Dao");
         } else {
-            tableConfiguration.setDomainObjectName(cleanPrefix(tableName));
-            tableConfiguration.setMapperName(cleanPrefix(tableName) + "Mapper");
+            tableConfiguration.setDomainObjectName(cleanPrefix(tableName) + "Entity");
+            tableConfiguration.setMapperName(cleanPrefix(tableName) + "Dao");
         }
 
 
@@ -311,7 +324,7 @@ public class CodeGenerator {
             data.put("author", AUTHOR);
             String modelNameUpperCamel = StringUtils.isEmpty(modelName) ?
                     tableNameConvertUpperCamel(tableName) : modelName;
-            data.put("baseRequestMapping", "frontend/v1" +modelNameConvertMappingPath(modelNameUpperCamel));
+            data.put("baseRequestMapping", "frontend/v1" + modelNameConvertMappingPath(modelNameUpperCamel));
             data.put("modelNameUpperCamel", modelNameUpperCamel);
             data.put("modelNameLowerCamel", CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, modelNameUpperCamel));
             data.put("basePackage", BASE_PACKAGE);
@@ -324,7 +337,7 @@ public class CodeGenerator {
             //cfg.getTemplate("controller-restful.ftl").process(data, new FileWriter(file));
             cfg.getTemplate("fs-controller.ftl").process(data, new FileWriter(file));
 
-            System.out.println("Frontend" +modelNameUpperCamel + "Controller.java 生成成功");
+            System.out.println("Frontend" + modelNameUpperCamel + "Controller.java 生成成功");
         } catch (Exception e) {
             throw new RuntimeException("生成fs-ontroller失败", e);
         }
